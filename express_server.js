@@ -30,8 +30,9 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);
-  res.send("Ok");
+  const randomStr = generateRandomString();
+  urlDatabase[randomStr] = req.body.longURL;
+  res.redirect(`/urls/${randomStr}`);
 });
 
 app.get("/urls.json", (req, res) => {
@@ -47,7 +48,10 @@ app.get("/urls/:id", (req, res) => {
   res.render("urls_show", templateVars);
 });
 
-
+app.get("/u/:id", (req, res) => {
+  const longURL = urlDatabase[req.params.id] ? urlDatabase[req.params.id] : "/";
+  res.redirect(longURL);
+});
 
 app.get("/hello", (req, res) => {
   // res.send("<html><body>Hello <b>World</b></body></html>\n");
