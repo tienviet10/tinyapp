@@ -65,6 +65,7 @@ app.post("/register", (req, res) => {
       password: req.body.password,
     };
     users[randId] = newUser;
+    console.log(newUser);
     res.cookie('user_id', randId);
     res.redirect("/urls");
   }
@@ -73,11 +74,11 @@ app.post("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "");
-  if (userObj) {
+  if (userObj && req.body.password && req.body.password === userObj.password) {
     res.cookie('user_id', userObj.id);
     res.redirect("/urls");
   } else {
-    res.status(400).json({ message: "Email not found!" });
+    res.status(403).json({ message: "Email or Password not found!" });
   }
 });
 
@@ -87,7 +88,7 @@ app.get("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id');
-  res.redirect("/urls");
+  res.redirect("/login");
 });
 
 app.get("/urls", (req, res) => {

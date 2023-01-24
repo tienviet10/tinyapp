@@ -16,27 +16,12 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
-
-        <% if (Object.keys(user).length === 0 && typeof user.email === 'undefined') {%>
-            <a class="nav-item nav-link" href="/register">Registration</a>
-            <a class="nav-item nav-link" href="/login">Sign In</a>
-        <% } %>
       </div>
     </div>
-    
-    <!-- <em>Username: <%= typeof username != 'undefined' ? username : 'default' %></em>
-    <form class="form-inline" action="/login" method="POST">
-      <div class="form-group mb-2">
-        <input
-          class="form-control"
-          type="text"
-          name="username"
-          placeholder="username"
-          style="width: 200px; margin: 0.5em"
-        />
-        <button type="submit" class="btn btn-primary">Sign In</button>
-      </div>
-    </form> -->
+    <% if (Object.keys(user).length === 0 && typeof user.email === 'undefined') {%>
+      <a class="text-white mr-3" href="/login">Sign In</a>
+      <a class="text-white" href="/register">Register</a>
+    <% } %>
     <% if (Object.keys(user).length > 0 && typeof user.email != 'undefined') {%>
       <h4 class="text-white mr-3" ><%= user.email %></h4>
       <form class="form-inline" action="/logout" method="POST">
