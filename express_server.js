@@ -10,6 +10,8 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+let username = "";
+
 const generateRandomString = () => {
   let res = "";
   for (let i = 0; i < 6; i++) {
@@ -23,6 +25,15 @@ app.get("/", (req, res) => {
 });
 
 
+app.post("/login", (req, res) => {
+  if (req.body.username && req.body.username.length > 0) {
+    username = req.body.username;
+  }
+  console.log(username);
+  // res.send("ok");
+  res.cookie('username', username);
+  res.redirect("/urls");
+});
 
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
@@ -66,6 +77,7 @@ app.get("/u/:id", (req, res) => {
   const longURL = urlDatabase[req.params.id] ? urlDatabase[req.params.id] : "/";
   res.redirect(longURL);
 });
+
 
 
 
