@@ -16,26 +16,33 @@
   <%- include('partials/_header', {user}) %>
   
   <main style="margin: 1em;">
-    <h3>My URLs</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Short URL ID</th>
-          <th scope="col">Long URL</th>
-          <th scope="col">Edit</th>
-          <th scope="col">Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (let id in urls) {%>
+    <% if (Object.keys(user).length > 0) {%>
+      <h3>My URLs</h3>
+      <table class="table">
+        <thead>
           <tr>
-            <td><%= id %></td>
-            <td><%= urls[id] %></td>
-            <td><form method="GET" action=<%= `/urls/${id}` %>><button class="btn btn-outline-primary" type="submit">Edit</button></form></td>
-            <td><form method="POST" action=<%= `/urls/${id}/delete` %>><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
+            <th scope="col">Short URL ID</th>
+            <th scope="col">Long URL</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
           </tr>
+        </thead>
+        <% if (Object.keys(urls).length > 0) {%>
+        <tbody>
+          <% for (let id in urls) {%>
+            <tr>
+              <td><%= id %></td>
+              <td><%= urls[id].longURL %></td>
+              <td><form method="GET" action=<%= `/urls/${id}` %>><button class="btn btn-outline-primary" type="submit">Edit</button></form></td>
+              <td><form method="POST" action=<%= `/urls/${id}/delete` %>><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
+            </tr>
+          <%} %>
+        </tbody>
         <%} %>
-      </tbody>
+      </table>
+    <%} else {%>
+      <h1>Please sign in OR Register for accessing this page!</h1>
+    <%} %>
   </main>
 
 

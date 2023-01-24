@@ -7,9 +7,20 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// const urlDatabase = {
+//   "b2xVn2": "http://www.lighthouselabs.ca",
+//   "9sm5xK": "http://www.google.com"
+// };
+
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: {
+    longURL: "https://www.tsn.ca",
+    userID: "user2RandomID",
+  },
+  i3BoGr: {
+    longURL: "https://www.google.ca",
+    userID: "userRandomID",
+  },
 };
 
 const users = {
@@ -42,6 +53,16 @@ const generateRandomString = () => {
   return res;
 };
 
+const urlsForUser = (id) => {
+  let res = {};
+  for (let key in urlDatabase) {
+    if (urlDatabase[key].userID === id) {
+      res[key] = urlDatabase[key];
+    }
+  }
+  return res;
+};
+
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -57,7 +78,7 @@ app.get("/register", (req, res) => {
 
 app.post("/register", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "");
-  
+
   if (req.body.email === "" || req.body.password === "" || userObj) {
     res.status(400).json({ message: "Email or Password is invalid!" });
   } else {
@@ -97,7 +118,11 @@ app.post("/logout", (req, res) => {
 });
 
 app.get("/urls", (req, res) => {
-  const templateVars = { urls: urlDatabase, user: users[req.cookies["user_id"]] || {} };
+  let templateVars = { user: {}, urls: {} };
+  if (users[req.cookies["user_id"]]) {
+    const filteredURL = urlsForUser(req.cookies["user_id"]);
+    templateVars = { urls: filteredURL, user: users[req.cookies["user_id"]] || {} };
+  }
   res.render("urls_index", templateVars);
 });
 
@@ -106,7 +131,10 @@ app.post("/urls", (req, res) => {
     res.send("Please loin first before accessing this functionality");
   } else {
     const randomStr = generateRandomString();
-    urlDatabase[randomStr] = req.body.longURL;
+    urlDatabase[randomStr] = {
+      longURL: req.body.longURL,
+      userID: req.cookies["user_id"]
+    };
     res.redirect(`/urls/${randomStr}`);
   }
 });
@@ -118,35 +146,52 @@ app.get("/urls.json", (req, res) => {
 app.get("/urls/new", (req, res) => {
   if (!users[req.cookies["user_id"]]) {
     res.redirect("/login");
+  } else {
+    const templateVars = { user: users[req.cookies["user_id"]] || {} };
+    res.render("urls_new", templateVars);
   }
-
-  const templateVars = { user: users[req.cookies["user_id"]] || {} };
-  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], user: users[req.cookies["user_id"]] || {} };
-  res.render("urls_show", templateVars);
+  if (!users[req.cookies["user_id"]]) {
+    res.status(403).json({ message: "Authorization Denied!" });
+  } else {
+    const shortenedLinks = urlsForUser(req.cookies["user_id"]);
+    if (req.params.id in shortenedLinks) {
+      const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.cookies["user_id"]] || {} };
+      res.render("urls_show", templateVars);
+    } else {
+      res.status(403).json({ message: "Authorization Denied!" });
+    }
+  }
 });
 
 app.post("/urls/:id/delete", (req, res) => {
-  if (req.params.id in urlDatabase) {
+  const shortenedLinks = urlsForUser(req.cookies["user_id"]);
+  if (users[req.cookies["user_id"]] && req.params.id in shortenedLinks) {
     delete urlDatabase[req.params.id];
+    res.redirect("/urls");
+  } else {
+    res.status(403).json({ message: "Authorization Denied!" });
   }
-  res.redirect("/urls");
+
 });
 
 app.post("/urls/:id/edit", (req, res) => {
-  if (req.params.id in urlDatabase) {
-    urlDatabase[req.params.id] = req.body.longURL;
+  const shortenedLinks = urlsForUser(req.cookies["user_id"]);
+  if (users[req.cookies["user_id"]] && req.params.id in shortenedLinks) {
+    urlDatabase[req.params.id].longURL = req.body.longURL;
+    res.redirect("/urls");
+  } else {
+    res.status(403).json({ message: "Authorization Denied!" });
   }
-  res.redirect("/urls");
+
 });
 
 
 app.get("/u/:id", (req, res) => {
   if (urlDatabase[req.params.id]) {
-    res.redirect(urlDatabase[req.params.id]);
+    res.redirect(urlDatabase[req.params.id].longURL);
   } else {
     res.status(404).json({ message: "Shortened URL not found" });
     // res.redirect(longURL);
