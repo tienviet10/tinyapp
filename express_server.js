@@ -49,12 +49,15 @@ app.get("/", (req, res) => {
 
 
 app.get("/register", (req, res) => {
+  if (users[req.cookies["user_id"]]) {
+    res.redirect("/urls");
+  }
   res.render("registration");
 });
 
 app.post("/register", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "");
-
+  
   if (req.body.email === "" || req.body.password === "" || userObj) {
     res.status(400).json({ message: "Email or Password is invalid!" });
   } else {
@@ -65,7 +68,6 @@ app.post("/register", (req, res) => {
       password: req.body.password,
     };
     users[randId] = newUser;
-    console.log(newUser);
     res.cookie('user_id', randId);
     res.redirect("/urls");
   }
@@ -83,6 +85,9 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
+  if (users[req.cookies["user_id"]]) {
+    res.redirect("/urls");
+  }
   res.render("login");
 });
 
@@ -97,9 +102,13 @@ app.get("/urls", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  const randomStr = generateRandomString();
-  urlDatabase[randomStr] = req.body.longURL;
-  res.redirect(`/urls/${randomStr}`);
+  if (!users[req.cookies["user_id"]]) {
+    res.send("Please loin first before accessing this functionality");
+  } else {
+    const randomStr = generateRandomString();
+    urlDatabase[randomStr] = req.body.longURL;
+    res.redirect(`/urls/${randomStr}`);
+  }
 });
 
 app.get("/urls.json", (req, res) => {
@@ -107,6 +116,10 @@ app.get("/urls.json", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  if (!users[req.cookies["user_id"]]) {
+    res.redirect("/login");
+  }
+
   const templateVars = { user: users[req.cookies["user_id"]] || {} };
   res.render("urls_new", templateVars);
 });
@@ -132,11 +145,13 @@ app.post("/urls/:id/edit", (req, res) => {
 
 
 app.get("/u/:id", (req, res) => {
-  const longURL = urlDatabase[req.params.id] ? urlDatabase[req.params.id] : "/";
-  res.redirect(longURL);
+  if (urlDatabase[req.params.id]) {
+    res.redirect(urlDatabase[req.params.id]);
+  } else {
+    res.status(404).json({ message: "Shortened URL not found" });
+    // res.redirect(longURL);
+  }
 });
-
-
 
 
 
