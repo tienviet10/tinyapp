@@ -7,10 +7,6 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// const urlDatabase = {
-//   "b2xVn2": "http://www.lighthouselabs.ca",
-//   "9sm5xK": "http://www.google.com"
-// };
 
 const urlDatabase = {
   b6UTxQ: {
@@ -35,6 +31,7 @@ const users = {
     password: "dishwasher-funk",
   },
 };
+
 
 const getUserByEmail = (email) => {
   for (let obj in users) {
@@ -63,11 +60,11 @@ const urlsForUser = (id) => {
   return res;
 };
 
+
+
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  res.redirect("/login");
 });
-
-
 
 app.get("/register", (req, res) => {
   if (users[req.cookies["user_id"]]) {
@@ -79,8 +76,10 @@ app.get("/register", (req, res) => {
 app.post("/register", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "");
 
-  if (req.body.email === "" || req.body.password === "" || userObj) {
+  if (req.body.email === "" || req.body.password === "") {
     res.status(400).json({ message: "Email or Password is invalid!" });
+  } else if (userObj) {
+    res.status(400).json({ message: "Email already registered" });
   } else {
     const randId = generateRandomString();
     const newUser = {
@@ -92,7 +91,14 @@ app.post("/register", (req, res) => {
     res.cookie('user_id', randId);
     res.redirect("/urls");
   }
+});
 
+
+app.get("/login", (req, res) => {
+  if (users[req.cookies["user_id"]]) {
+    res.redirect("/urls");
+  }
+  res.render("login");
 });
 
 app.post("/login", (req, res) => {
@@ -105,30 +111,24 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/login", (req, res) => {
-  if (users[req.cookies["user_id"]]) {
-    res.redirect("/urls");
-  }
-  res.render("login");
-});
-
 app.post("/logout", (req, res) => {
   res.clearCookie('user_id');
   res.redirect("/login");
 });
 
+
 app.get("/urls", (req, res) => {
-  let templateVars = { user: {}, urls: {} };
+  let templateVars = { user: "", urls: {} };
   if (users[req.cookies["user_id"]]) {
     const filteredURL = urlsForUser(req.cookies["user_id"]);
-    templateVars = { urls: filteredURL, user: users[req.cookies["user_id"]] || {} };
+    templateVars = { urls: filteredURL, user: users[req.cookies["user_id"]].email };
   }
   res.render("urls_index", templateVars);
 });
 
 app.post("/urls", (req, res) => {
   if (!users[req.cookies["user_id"]]) {
-    res.send("Please loin first before accessing this functionality");
+    res.send("Please login first before accessing this functionality");
   } else {
     const randomStr = generateRandomString();
     urlDatabase[randomStr] = {
@@ -147,7 +147,7 @@ app.get("/urls/new", (req, res) => {
   if (!users[req.cookies["user_id"]]) {
     res.redirect("/login");
   } else {
-    const templateVars = { user: users[req.cookies["user_id"]] || {} };
+    const templateVars = { user: users[req.cookies["user_id"]].email };
     res.render("urls_new", templateVars);
   }
 });
@@ -158,7 +158,7 @@ app.get("/urls/:id", (req, res) => {
   } else {
     const shortenedLinks = urlsForUser(req.cookies["user_id"]);
     if (req.params.id in shortenedLinks) {
-      const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.cookies["user_id"]] || {} };
+      const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.cookies["user_id"]].email };
       res.render("urls_show", templateVars);
     } else {
       res.status(403).json({ message: "Authorization Denied!" });
@@ -188,7 +188,6 @@ app.post("/urls/:id/edit", (req, res) => {
 
 });
 
-
 app.get("/u/:id", (req, res) => {
   if (urlDatabase[req.params.id]) {
     res.redirect(urlDatabase[req.params.id].longURL);
@@ -197,7 +196,6 @@ app.get("/u/:id", (req, res) => {
     // res.redirect(longURL);
   }
 });
-
 
 
 app.get("/hello", (req, res) => {

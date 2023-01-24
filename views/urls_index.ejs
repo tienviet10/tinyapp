@@ -16,7 +16,7 @@
   <%- include('partials/_header', {user}) %>
   
   <main style="margin: 1em;">
-    <% if (Object.keys(user).length > 0) {%>
+    <% if (user && user.length > 0) {%>
       <h3>My URLs</h3>
       <table class="table">
         <thead>
@@ -41,7 +41,22 @@
         <%} %>
       </table>
     <%} else {%>
-      <h1>Please sign in OR Register for accessing this page!</h1>
+      <div class="d-flex align-items-center justify-content-center vh-100">
+        <div class="text-center row">
+            <div class=" col-md-6">
+                <img src="https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=360&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 360w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=740&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 740w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=826&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 826w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=900&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 900w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=996&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 996w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1060&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1060w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1380&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1380w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1480&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1480w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1800&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1800w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=2000&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 2000w" alt=""
+                    class="img-fluid">
+            </div>
+            <div class=" col-md-6 mt-5">
+                <p class="fs-3"> <span class="text-danger">Opps!</span> No URLs.</p>
+                <p class="lead">
+                    Please log in to see your URLs!
+                </p>
+                <a href="/login" class="btn btn-success">Sign in</a>
+            </div>
+
+        </div>
+    </div>
     <%} %>
   </main>
 
