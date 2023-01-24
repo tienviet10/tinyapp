@@ -33,7 +33,12 @@
       </div>
     </form> -->
     <% if (typeof username != 'undefined') {%>
-      <h4><%= username %></h4>
+      <h4 class="text-white mr-3" ><%= username %></h4>
+      <form class="form-inline" action="/logout" method="POST">
+        <div class="form-group mb-2">
+          <button type="submit" class="btn btn-outline-light">Logout</button>
+        </div>
+      </form>
     <% } else {%>
       <form class="form-inline" action="/login" method="POST">
         <div class="form-group mb-2">
@@ -44,7 +49,7 @@
             placeholder="username"
             style="width: 200px; margin: 0.5em"
           />
-          <button type="submit" class="btn btn-primary">Sign In</button>
+          <button type="submit" class="btn btn-outline-light">Sign In</button>
         </div>
       </form>
     <% } %>
