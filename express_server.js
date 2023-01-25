@@ -1,13 +1,14 @@
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bcrypt = require("bcryptjs");
+const methodOverride = require('method-override');
 const { getUserByEmail, generateRandomString, urlsForUser } = require("./helpers");
 const app = express();
 const PORT = 8080;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'));
 app.use(cookieSession({
   name: 'session',
   keys: ['ajsgioeewoiuskjbfjdshk'],
@@ -147,7 +148,16 @@ app.get("/urls/:id", (req, res) => {
   res.status(403).send("Authorization Denied!");
 });
 
-app.post("/urls/:id/delete", (req, res) => {
+app.put("/urls/:id", (req, res) => {
+  const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
+  if (users[req.session.user_id] && req.params.id in shortenedLinks) {
+    urlDatabase[req.params.id].longURL = req.body.longURL;
+    return res.redirect("/urls");
+  }
+  res.status(403).send("Authorization Denied!");
+});
+
+app.delete("/urls/:id", (req, res) => {
   const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
     delete urlDatabase[req.params.id];
@@ -156,14 +166,6 @@ app.post("/urls/:id/delete", (req, res) => {
   res.status(403).send("Authorization Denied!");
 });
 
-app.post("/urls/:id/edit", (req, res) => {
-  const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
-  if (users[req.session.user_id] && req.params.id in shortenedLinks) {
-    urlDatabase[req.params.id].longURL = req.body.longURL;
-    return res.redirect("/urls");
-  }
-  res.status(403).send("Authorization Denied!");
-});
 
 // Redirect to longURL (anyone can access this)
 app.get("/u/:id", (req, res) => {
