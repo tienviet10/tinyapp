@@ -64,7 +64,7 @@ $ cd tinyapp
 $ npm install
 ```
 
-4. Install dependencies
+4. Run the development web server
 
 ```sh
 $ node express_server.js
