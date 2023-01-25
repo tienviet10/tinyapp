@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bcrypt = require("bcryptjs");
-const { getUserByEmail } = require("./helpers");
+const { getUserByEmail, generateRandomString, urlsForUser } = require("./helpers");
 const app = express();
 const PORT = 8080;
 
@@ -10,8 +10,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieSession({
   name: 'session',
-  keys: [ 'ajsgioeewoiuskjbfjdshk' ],
+  keys: ['ajsgioeewoiuskjbfjdshk'],
 }));
+
+//--------------------------------DATABASE---------------------------------------
 
 const urlDatabase = {
   b6UTxQ: {
@@ -38,33 +40,13 @@ const users = {
   },
 };
 
-
-
-
-const generateRandomString = () => {
-  let res = "";
-  for (let i = 0; i < 6; i++) {
-    res += (String.fromCharCode(97 + Math.floor(Math.random() * 26)));
-  }
-  return res;
-};
-
-const urlsForUser = (id) => {
-  let res = {};
-  for (let key in urlDatabase) {
-    if (urlDatabase[key].userID === id) {
-      res[key] = urlDatabase[key];
-    }
-  }
-  return res;
-};
-
-
+//--------------------------------ENDPOINTS---------------------------------------
 
 app.get("/", (req, res) => {
   res.redirect("/login");
 });
 
+// Registration
 app.get("/register", (req, res) => {
   if (users[req.session.user_id]) {
     return res.redirect("/urls");
@@ -81,7 +63,7 @@ app.post("/register", (req, res) => {
   if (userObj) {
     return res.status(400).send("Email already registered");
   }
-  
+
   const randId = generateRandomString();
   const hashedPassword = bcrypt.hashSync(req.body.password, 10);
   const newUser = {
@@ -94,7 +76,7 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-
+// Login & Logout
 app.get("/login", (req, res) => {
   if (users[req.session.user_id]) {
     return res.redirect("/urls");
@@ -108,7 +90,7 @@ app.post("/login", (req, res) => {
     req.session.user_id = userObj.id;
     return res.redirect("/urls");
   }
-  
+
   res.status(403).send("Email or Password not found!");
 });
 
@@ -117,11 +99,11 @@ app.post("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-
+//URLs related requests
 app.get("/urls", (req, res) => {
   let templateVars = { user: "", urls: {} };
   if (users[req.session.user_id]) {
-    const filteredURL = urlsForUser(req.session.user_id);
+    const filteredURL = urlsForUser(req.session.user_id, urlDatabase);
     templateVars = { urls: filteredURL, user: users[req.session.user_id].email };
   }
   res.render("urls_index", templateVars);
@@ -156,7 +138,7 @@ app.get("/urls/:id", (req, res) => {
     return res.status(403).send("Authorization Denied!");
   }
 
-  const shortenedLinks = urlsForUser(req.session.user_id);
+  const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (req.params.id in shortenedLinks) {
     const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.session.user_id].email };
     return res.render("urls_show", templateVars);
@@ -166,7 +148,7 @@ app.get("/urls/:id", (req, res) => {
 });
 
 app.post("/urls/:id/delete", (req, res) => {
-  const shortenedLinks = urlsForUser(req.session.user_id);
+  const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
     delete urlDatabase[req.params.id];
     return res.redirect("/urls");
@@ -175,7 +157,7 @@ app.post("/urls/:id/delete", (req, res) => {
 });
 
 app.post("/urls/:id/edit", (req, res) => {
-  const shortenedLinks = urlsForUser(req.session.user_id);
+  const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
     urlDatabase[req.params.id].longURL = req.body.longURL;
     return res.redirect("/urls");
@@ -183,6 +165,7 @@ app.post("/urls/:id/edit", (req, res) => {
   res.status(403).send("Authorization Denied!");
 });
 
+// Redirect to longURL (anyone can access this)
 app.get("/u/:id", (req, res) => {
   if (urlDatabase[req.params.id]) {
     urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
@@ -191,11 +174,6 @@ app.get("/u/:id", (req, res) => {
   res.status(404).send("Shortened URL not found");
 });
 
-
-app.get("/hello", (req, res) => {
-  const templateVars = { greeting: "Hello World!" };
-  res.render("hello_world", templateVars);
-});
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

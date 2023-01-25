@@ -1,82 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link
-  rel="stylesheet"
-  href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-  integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-  crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
   <title>TinyApp</title>
 </head>
+
 <body>
   <%- include('partials/_header', {user}) %>
-  
-  <main style="margin: 1em;">
-    <% if (user && user.length > 0) {%>
-      <h3>My URLs</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">Short URL ID</th>
-            <th scope="col">Long URL</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-            <th scope="col" class="d-flex justify-content-center">Visit(s)</th>
-          </tr>
-        </thead>
-        <% if (Object.keys(urls).length > 0) {%>
-        <tbody>
-          <% for (let id in urls) {%>
+
+    <main style="margin: 1em;">
+      <% if (user && user.length> 0) {%>
+        <h3>My URLs</h3>
+        <table class="table">
+          <thead>
             <tr>
-              <td><%= id %></td>
-              <td><%= urls[id].longURL %></td>
-              <td><form method="GET" action=<%= `/urls/${id}` %>><button class="btn btn-outline-primary" type="submit">Edit</button></form></td>
-              <td><form method="POST" action=<%= `/urls/${id}/delete` %>><button class="btn btn-outline-danger" type="submit">Delete</button></form></td>
-              <td class="d-flex justify-content-center"><%= urls[id].visit || 0 %></td>
+              <th scope="col">Short URL ID</th>
+              <th scope="col">Long URL</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Delete</th>
+              <th scope="col" class="d-flex justify-content-center">Visit(s)</th>
             </tr>
+          </thead>
+          <% if (Object.keys(urls).length> 0) {%>
+            <tbody>
+              <% for (let id in urls) {%>
+                <tr>
+                  <td>
+                    <%= id %>
+                  </td>
+                  <td>
+                    <%= urls[id].longURL %>
+                  </td>
+                  <td>
+                    <form method="GET" action=<%=`/urls/${id}` %>><button class="btn btn-outline-primary"
+                        type="submit">Edit</button></form>
+                  </td>
+                  <td>
+                    <form method="POST" action=<%=`/urls/${id}/delete` %>><button class="btn btn-outline-danger"
+                        type="submit">Delete</button></form>
+                  </td>
+                  <td class="d-flex justify-content-center">
+                    <%= urls[id].visit || 0 %>
+                  </td>
+                </tr>
+              <%} %>
+            </tbody>
           <%} %>
-        </tbody>
-        <%} %>
-      </table>
-    <%} else {%>
-      <div class="d-flex align-items-center justify-content-center vh-100">
-        <div class="text-center row">
+        </table>
+      <%} else {%>
+        <div class="d-flex align-items-center justify-content-center vh-100">
+          <div class="text-center row">
             <div class=" col-md-6">
-                <img src="https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=360&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 360w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=740&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 740w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=826&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 826w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=900&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 900w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=996&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 996w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1060&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1060w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1380&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1380w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1480&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1480w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1800&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1800w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=2000&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 2000w" alt=""
-                    class="img-fluid">
+              <img
+                src="https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=360&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 360w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=740&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 740w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=826&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 826w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=900&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 900w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=996&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 996w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1060&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1060w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1380&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1380w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1480&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1480w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=1800&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 1800w, https://img.freepik.com/free-vector/404-error-with-landscape-concept-illustration_114360-7898.jpg?w=2000&t=st=1674604370~exp=1674604970~hmac=f6f08d98ba6b2a4dcb00f0d4bccc38595f82cdf0414e4280dc18ee38767b0f58 2000w"
+                alt="" class="img-fluid">
             </div>
             <div class=" col-md-6 mt-5">
-                <p class="fs-3"> <span class="text-danger">Opps!</span> No URLs.</p>
-                <p class="lead">
-                    Please log in to see your URLs!
-                </p>
-                <a href="/login" class="btn btn-success">Sign in</a>
+              <p class="fs-3"> <span class="text-danger">Opps!</span> No URLs.</p>
+              <p class="lead">
+                Please log in to see your URLs!
+              </p>
+              <a href="/login" class="btn btn-success">Sign in</a>
             </div>
-
+          </div>
         </div>
-    </div>
-    <%} %>
-  </main>
+      <%} %>
+    </main>
 
 
-  <script
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"
-  ></script>
-  <script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"
-  ></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
 </body>
+
 </html>
