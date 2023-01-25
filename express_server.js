@@ -19,6 +19,7 @@ const urlDatabase = {
   b6UTxQ: {
     longURL: "https://www.tsn.ca",
     userID: "user2RandomID",
+    visit: 0,
   },
   i3BoGr: {
     longURL: "https://www.google.ca",
@@ -188,6 +189,7 @@ app.post("/urls/:id/edit", (req, res) => {
 
 app.get("/u/:id", (req, res) => {
   if (urlDatabase[req.params.id]) {
+    urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
     return res.redirect(urlDatabase[req.params.id].longURL);
   }
   res.status(404).send("Shortened URL not found");
