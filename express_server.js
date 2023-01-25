@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const express = require("express");
 const cookieSession = require('cookie-session');
 const bcrypt = require("bcryptjs");
@@ -21,6 +22,8 @@ const urlDatabase = {
     longURL: "https://www.tsn.ca",
     userID: "user2RandomID",
     visit: 0,
+    uniqueVisitor: new Set(),
+    allVisits: []
   },
   i3BoGr: {
     longURL: "https://www.google.ca",
@@ -117,7 +120,10 @@ app.post("/urls", (req, res) => {
   const randomStr = generateRandomString();
   urlDatabase[randomStr] = {
     longURL: req.body.longURL,
-    userID: req.session.user_id
+    userID: req.session.user_id,
+    visit: 0,
+    uniqueVisitor: new Set(),
+    allVisits: []
   };
   res.redirect(`/urls/${randomStr}`);
 });
