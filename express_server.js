@@ -147,7 +147,7 @@ app.get("/urls/:id", (req, res) => {
 
   const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (req.params.id in shortenedLinks) {
-    const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.session.user_id].email };
+    const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.session.user_id].email, history: urlDatabase[req.params.id].allVisits };
     return res.render("urls_show", templateVars);
   }
 
@@ -175,6 +175,26 @@ app.delete("/urls/:id", (req, res) => {
 
 // Redirect to longURL (anyone can access this)
 app.get("/u/:id", (req, res) => {
+  const randId = generateRandomString();
+  if (!req.session.userIdForTimestamp) {
+    req.session.userIdForTimestamp = randId;
+  }
+
+  urlDatabase[req.params.id].allVisits.push({
+    timestamp: (new Date()).toString(),
+    userId: req.session.userIdForTimestamp
+  });
+
+  if (!req.session.uniqueSiteUserId) {
+    req.session.uniqueSiteUserId = randId;
+  }
+
+  urlDatabase[req.params.id].uniqueVisitor.add(req.session.uniqueSiteUserId);
+
+  // console.log(req.params.id);
+  // console.log(urlDatabase[req.params.id].allVisits);
+  // console.log(urlDatabase[req.params.id].uniqueVisitor);
+
   if (urlDatabase[req.params.id]) {
     urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
     return res.redirect(urlDatabase[req.params.id].longURL);

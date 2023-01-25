@@ -31,6 +31,29 @@
           </div>
         </form>
       </div>
+      <h4 class="mt-5 mb-3">History</h4>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">User ID</th>
+            <th scope="col">Time</th>
+          </tr>
+        </thead>
+
+          <tbody>
+              <% history.forEach(ele => { %>
+                <tr>
+                  <td>
+                    <%= ele.userId %>
+                  </td>
+                  <td>
+                    <%= ele.timestamp %>
+                  </td>
+                </tr>
+              <% }) %>
+          </tbody>
+  
+      </table>
     </div>
 
 
