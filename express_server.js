@@ -1,5 +1,4 @@
 const express = require("express");
-// const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require("bcryptjs");
 const { getUserByEmail } = require("./helpers");
@@ -8,7 +7,6 @@ const PORT = 8080;
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
 
 app.use(cookieSession({
   name: 'session',
@@ -92,7 +90,6 @@ app.post("/register", (req, res) => {
     password: hashedPassword,
   };
   users[randId] = newUser;
-  // res.cookie('user_id', randId);
   req.session.user_id = randId;
   res.redirect("/urls");
 });
@@ -108,7 +105,6 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
-    // res.cookie('user_id', userObj.id);
     req.session.user_id = userObj.id;
     return res.redirect("/urls");
   }
@@ -197,7 +193,6 @@ app.get("/u/:id", (req, res) => {
 
 
 app.get("/hello", (req, res) => {
-  // res.send("<html><body>Hello <b>World</b></body></html>\n");
   const templateVars = { greeting: "Hello World!" };
   res.render("hello_world", templateVars);
 });
