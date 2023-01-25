@@ -10,7 +10,7 @@
 <p align="center">
   <a href="#final-product">Final Product</a> •
   <a href="#dependencies">Dependencies</a> •
-  <a href="#getting-started">Getting Started</a> •
+  <a href="#getting-started">Getting Started</a>
 </p>
 
 
