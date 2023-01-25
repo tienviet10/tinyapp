@@ -22,11 +22,18 @@
 
 ## Dependencies
 
-- Node.js
-- Express
-- EJS
-- bcryptjs
-- cookie-session
+**Dependencies**
+
+- [Node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [EJS](https://ejs.co/)
+- [bcryptjs](https://github.com/kelektiv/node.bcrypt.js#readme)
+- [cookie-session](https://github.com/expressjs/cookie-session#readme)
+
+**Dev-dependencies**
+- [Chai](https://www.chaijs.com/)
+- [Mocha](https://mochajs.org/)
+- [Nodemon](https://nodemon.io/)
 
 ## Getting Started
 
