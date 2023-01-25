@@ -19,6 +19,8 @@
 
 !["Screenshot of URLs page - Not Login"](https://github.com/tienviet10/tinyapp/blob/main/docs/urls-no-login.png?raw=true)
 !["Screenshot of URLs page"](https://github.com/tienviet10/tinyapp/blob/main/docs/urls.png?raw=true)
+!["Screenshot of Login page"](https://github.com/tienviet10/tinyapp/blob/main/docs/login.png?raw=true)
+!["Screenshot of Editting page"](https://github.com/tienviet10/tinyapp/blob/main/docs/edit-short-url.png?raw=true)
 
 ## Dependencies
 
