@@ -46,11 +46,13 @@ const users = {
 
 //--------------------------------ENDPOINTS---------------------------------------
 
+// Redirect "/" route to login route
 app.get("/", (req, res) => {
   res.redirect("/login");
 });
 
-// Registration
+//---- Registration
+// Send the registration page to user
 app.get("/register", (req, res) => {
   if (users[req.session.user_id]) {
     return res.redirect("/urls");
@@ -58,6 +60,7 @@ app.get("/register", (req, res) => {
   res.render("registration");
 });
 
+// Check and add a user to the database
 app.post("/register", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "", users);
 
@@ -80,7 +83,8 @@ app.post("/register", (req, res) => {
   res.redirect("/urls");
 });
 
-// Login & Logout
+//---- Login & Logout
+// Send the login page to user
 app.get("/login", (req, res) => {
   if (users[req.session.user_id]) {
     return res.redirect("/urls");
@@ -88,6 +92,7 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
+// Verify and log user into the system
 app.post("/login", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
@@ -98,12 +103,14 @@ app.post("/login", (req, res) => {
   res.status(403).send("Email or Password not found!");
 });
 
+// Log user out and clear cache
 app.post("/logout", (req, res) => {
   req.session = null;
   res.redirect("/login");
 });
 
-//URLs related requests
+//---- URLs related requests
+// Send a page in which users can see their short links
 app.get("/urls", (req, res) => {
   let templateVars = { user: "", urls: {} };
   if (users[req.session.user_id]) {
@@ -113,6 +120,7 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+// Create a new short link
 app.post("/urls", (req, res) => {
   if (!users[req.session.user_id]) {
     return res.send("Please login first before accessing this functionality");
@@ -132,6 +140,7 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
+// Send a page for registered users to create short link
 app.get("/urls/new", (req, res) => {
   if (!users[req.session.user_id]) {
     return res.redirect("/login");
@@ -140,6 +149,7 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
+// Check and get information of the short link
 app.get("/urls/:id", (req, res) => {
   if (!users[req.session.user_id]) {
     return res.status(403).send("Authorization Denied!");
@@ -154,6 +164,7 @@ app.get("/urls/:id", (req, res) => {
   res.status(403).send("Authorization Denied!");
 });
 
+// Check and edit the short link by the owner
 app.put("/urls/:id", (req, res) => {
   const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
@@ -163,6 +174,7 @@ app.put("/urls/:id", (req, res) => {
   res.status(403).send("Authorization Denied!");
 });
 
+// Check and delete the short link by the owner
 app.delete("/urls/:id", (req, res) => {
   const shortenedLinks = urlsForUser(req.session.user_id, urlDatabase);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
@@ -173,7 +185,8 @@ app.delete("/urls/:id", (req, res) => {
 });
 
 
-// Redirect to longURL (anyone can access this)
+//---- Redirect to longURL (anyone can access this)
+// Redirect to long URL and keep track of analytics
 app.get("/u/:id", (req, res) => {
   const randId = generateRandomString();
   if (!req.session.userIdForTimestamp) {
@@ -190,10 +203,6 @@ app.get("/u/:id", (req, res) => {
   }
 
   urlDatabase[req.params.id].uniqueVisitor.add(req.session.uniqueSiteUserId);
-
-  // console.log(req.params.id);
-  // console.log(urlDatabase[req.params.id].allVisits);
-  // console.log(urlDatabase[req.params.id].uniqueVisitor);
 
   if (urlDatabase[req.params.id]) {
     urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
