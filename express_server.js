@@ -2,6 +2,7 @@ const express = require("express");
 // const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const bcrypt = require("bcryptjs");
+const { getUserByEmail } = require("./helpers");
 const app = express();
 const PORT = 8080;
 
@@ -39,14 +40,7 @@ const users = {
 };
 
 
-const getUserByEmail = (email) => {
-  for (let obj in users) {
-    if (users[obj].email === email) {
-      return users[obj];
-    }
-  }
-  return undefined;
-};
+
 
 const generateRandomString = () => {
   let res = "";
@@ -73,52 +67,52 @@ app.get("/", (req, res) => {
 });
 
 app.get("/register", (req, res) => {
-  // if (users[req.session.user_id]) {
   if (users[req.session.user_id]) {
-    res.redirect("/urls");
+    return res.redirect("/urls");
   }
   res.render("registration");
 });
 
 app.post("/register", (req, res) => {
-  const userObj = getUserByEmail(req.body.email || "");
+  const userObj = getUserByEmail(req.body.email || "", users);
 
   if (req.body.email === "" || req.body.password === "") {
-    res.status(400).json({ message: "Email or Password is invalid!" });
-  } else if (userObj) {
-    res.status(400).json({ message: "Email already registered" });
-  } else {
-    const randId = generateRandomString();
-    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-    const newUser = {
-      id: randId,
-      email: req.body.email,
-      password: hashedPassword,
-    };
-    users[randId] = newUser;
-    // res.cookie('user_id', randId);
-    req.session.user_id = randId;
-    res.redirect("/urls");
+    return res.status(400).send("Email or Password is invalid!");
   }
+  if (userObj) {
+    return res.status(400).send("Email already registered");
+  }
+  
+  const randId = generateRandomString();
+  const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+  const newUser = {
+    id: randId,
+    email: req.body.email,
+    password: hashedPassword,
+  };
+  users[randId] = newUser;
+  // res.cookie('user_id', randId);
+  req.session.user_id = randId;
+  res.redirect("/urls");
 });
 
 
 app.get("/login", (req, res) => {
   if (users[req.session.user_id]) {
-    res.redirect("/urls");
+    return res.redirect("/urls");
   }
   res.render("login");
 });
 
 app.post("/login", (req, res) => {
-  const userObj = getUserByEmail(req.body.email || "");
+  const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
     // res.cookie('user_id', userObj.id);
     req.session.user_id = userObj.id;
-    res.redirect("/urls");
-  } else {
-    res.status(403).json({ message: "Email or Password not found!" });
+    return res.redirect("/urls");
   }
+  
+  res.status(403).send("Email or Password not found!");
 });
 
 app.post("/logout", (req, res) => {
@@ -138,15 +132,14 @@ app.get("/urls", (req, res) => {
 
 app.post("/urls", (req, res) => {
   if (!users[req.session.user_id]) {
-    res.send("Please login first before accessing this functionality");
-  } else {
-    const randomStr = generateRandomString();
-    urlDatabase[randomStr] = {
-      longURL: req.body.longURL,
-      userID: req.session.user_id
-    };
-    res.redirect(`/urls/${randomStr}`);
+    return res.send("Please login first before accessing this functionality");
   }
+  const randomStr = generateRandomString();
+  urlDatabase[randomStr] = {
+    longURL: req.body.longURL,
+    userID: req.session.user_id
+  };
+  res.redirect(`/urls/${randomStr}`);
 });
 
 app.get("/urls.json", (req, res) => {
@@ -155,56 +148,49 @@ app.get("/urls.json", (req, res) => {
 
 app.get("/urls/new", (req, res) => {
   if (!users[req.session.user_id]) {
-    res.redirect("/login");
-  } else {
-    const templateVars = { user: users[req.session.user_id].email };
-    res.render("urls_new", templateVars);
+    return res.redirect("/login");
   }
+  const templateVars = { user: users[req.session.user_id].email };
+  res.render("urls_new", templateVars);
 });
 
 app.get("/urls/:id", (req, res) => {
   if (!users[req.session.user_id]) {
-    res.status(403).json({ message: "Authorization Denied!" });
-  } else {
-    const shortenedLinks = urlsForUser(req.session.user_id);
-    if (req.params.id in shortenedLinks) {
-      const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.session.user_id].email };
-      res.render("urls_show", templateVars);
-    } else {
-      res.status(403).json({ message: "Authorization Denied!" });
-    }
+    return res.status(403).send("Authorization Denied!");
   }
+
+  const shortenedLinks = urlsForUser(req.session.user_id);
+  if (req.params.id in shortenedLinks) {
+    const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL, user: users[req.session.user_id].email };
+    return res.render("urls_show", templateVars);
+  }
+
+  res.status(403).send("Authorization Denied!");
 });
 
 app.post("/urls/:id/delete", (req, res) => {
   const shortenedLinks = urlsForUser(req.session.user_id);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
     delete urlDatabase[req.params.id];
-    res.redirect("/urls");
-  } else {
-    res.status(403).json({ message: "Authorization Denied!" });
+    return res.redirect("/urls");
   }
-
+  res.status(403).send("Authorization Denied!");
 });
 
 app.post("/urls/:id/edit", (req, res) => {
   const shortenedLinks = urlsForUser(req.session.user_id);
   if (users[req.session.user_id] && req.params.id in shortenedLinks) {
     urlDatabase[req.params.id].longURL = req.body.longURL;
-    res.redirect("/urls");
-  } else {
-    res.status(403).json({ message: "Authorization Denied!" });
+    return res.redirect("/urls");
   }
-
+  res.status(403).send("Authorization Denied!");
 });
 
 app.get("/u/:id", (req, res) => {
   if (urlDatabase[req.params.id]) {
-    res.redirect(urlDatabase[req.params.id].longURL);
-  } else {
-    res.status(404).json({ message: "Shortened URL not found" });
-    // res.redirect(longURL);
+    return res.redirect(urlDatabase[req.params.id].longURL);
   }
+  res.status(404).send("Shortened URL not found");
 });
 
 
