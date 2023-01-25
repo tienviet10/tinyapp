@@ -35,15 +35,14 @@
 The following applications should be installed in your system:
 * [Git](https://git-scm.com) 
 * [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com))
-* MongoDB account
-* Google Cloud console for Google Calendar Integration
+
 
 **API**
 
 1. Create a folder and clone this repository
 
 ```sh
-$ git clone https://github.com/tienviet10/todos-server.git
+$ git clone https://github.com/tienviet10/tinyapp.git
 ```
 
 2. Move to the correct directory
