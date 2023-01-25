@@ -1,7 +1,8 @@
 const express = require("express");
+const cookieParser = require('cookie-parser');
+const bcrypt = require("bcryptjs");
 const app = express();
 const PORT = 8080;
-const cookieParser = require('cookie-parser');
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
@@ -82,10 +83,11 @@ app.post("/register", (req, res) => {
     res.status(400).json({ message: "Email already registered" });
   } else {
     const randId = generateRandomString();
+    const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     const newUser = {
       id: randId,
       email: req.body.email,
-      password: req.body.password,
+      password: hashedPassword,
     };
     users[randId] = newUser;
     res.cookie('user_id', randId);
@@ -103,7 +105,7 @@ app.get("/login", (req, res) => {
 
 app.post("/login", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "");
-  if (userObj && req.body.password && req.body.password === userObj.password) {
+  if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
     res.cookie('user_id', userObj.id);
     res.redirect("/urls");
   } else {
