@@ -92,14 +92,13 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
-// Verify and log user into the system
+// Verify and log the user into the system
 app.post("/login", (req, res) => {
   const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
     req.session.user_id = userObj.id;
     return res.redirect("/urls");
   }
-
   res.status(403).send("Email or Password not found!");
 });
 
@@ -140,7 +139,7 @@ app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
 });
 
-// Send a page for registered users to create short link
+// Send a page for registered users to create a short link
 app.get("/urls/new", (req, res) => {
   if (!users[req.session.user_id]) {
     return res.redirect("/login");
@@ -188,26 +187,27 @@ app.delete("/urls/:id", (req, res) => {
 //---- Redirect to longURL (anyone can access this)
 // Redirect to long URL and keep track of analytics
 app.get("/u/:id", (req, res) => {
+  if (urlDatabase[req.params.id]) {
+    urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
+    return res.redirect(urlDatabase[req.params.id].longURL);
+  }
+
+  // Keep track of timestamp and userID per short link
   const randId = generateRandomString();
   if (!req.session.userIdForTimestamp) {
     req.session.userIdForTimestamp = randId;
   }
-
   urlDatabase[req.params.id].allVisits.push({
     timestamp: (new Date()).toString(),
     userId: req.session.userIdForTimestamp
   });
 
+  // Keep track of unique visitors per short link
   if (!req.session.uniqueSiteUserId) {
     req.session.uniqueSiteUserId = randId;
   }
-
   urlDatabase[req.params.id].uniqueVisitor.add(req.session.uniqueSiteUserId);
 
-  if (urlDatabase[req.params.id]) {
-    urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
-    return res.redirect(urlDatabase[req.params.id].longURL);
-  }
   res.status(404).send("Shortened URL not found");
 });
 
