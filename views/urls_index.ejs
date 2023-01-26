@@ -16,7 +16,7 @@
     <main style="margin: 1em;">
       <% if (user && user.length> 0) {%>
         <h3>My URLs</h3>
-        <table class="table">
+        <table class="table table-striped">
           <thead>
             <tr>
               <th scope="col">Short URL ID</th>
@@ -42,7 +42,7 @@
                         type="submit">Edit</button></form>
                   </td>
                   <td>
-                    <form method="POST" action=<%= `/urls/${id}?_method=DELETE` %>><button class="btn btn-outline-danger"
+                    <form onsubmit="return confirm('Do you really want to delete the short link?');" method="POST" action=<%= `/urls/${id}?_method=DELETE` %> ><button class="btn btn-outline-danger"
                         type="submit">Delete</button></form>
                   </td>
                   <td class="text-center">

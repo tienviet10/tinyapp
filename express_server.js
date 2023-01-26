@@ -28,6 +28,9 @@ const urlDatabase = {
   i3BoGr: {
     longURL: "https://www.google.ca",
     userID: "userRandomID",
+    visit: 0,
+    uniqueVisitor: new Set(),
+    allVisits: []
   },
 };
 
@@ -35,13 +38,8 @@ const users = {
   userRandomID: {
     id: "userRandomID",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur",
-  },
-  user2RandomID: {
-    id: "user2RandomID",
-    email: "user2@example.com",
-    password: "dishwasher-funk",
-  },
+    password: bcrypt.hashSync("hello", 10),
+  }
 };
 
 //--------------------------------ENDPOINTS---------------------------------------
@@ -62,11 +60,11 @@ app.get("/register", (req, res) => {
 
 // Check and add a user to the database
 app.post("/register", (req, res) => {
-  const userObj = getUserByEmail(req.body.email || "", users);
-
   if (req.body.email === "" || req.body.password === "") {
     return res.status(400).send("Email or Password is invalid!");
   }
+  
+  const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj) {
     return res.status(400).send("Email already registered");
   }
@@ -94,6 +92,10 @@ app.get("/login", (req, res) => {
 
 // Verify and log the user into the system
 app.post("/login", (req, res) => {
+  if (req.body.email === "" || req.body.password === "") {
+    return res.status(400).send("Email or Password is invalid!");
+  }
+
   const userObj = getUserByEmail(req.body.email || "", users);
   if (userObj && req.body.password && bcrypt.compareSync(req.body.password, userObj.password)) {
     req.session.user_id = userObj.id;
@@ -187,30 +189,33 @@ app.delete("/urls/:id", (req, res) => {
 //---- Redirect to longURL (anyone can access this)
 // Redirect to long URL and keep track of analytics
 app.get("/u/:id", (req, res) => {
-  if (urlDatabase[req.params.id]) {
-    urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
-    return res.redirect(urlDatabase[req.params.id].longURL);
-  }
 
   // Keep track of timestamp and userID per short link
   const randId = generateRandomString();
   if (!req.session.userIdForTimestamp) {
     req.session.userIdForTimestamp = randId;
   }
-  urlDatabase[req.params.id].allVisits.push({
-    timestamp: (new Date()).toString(),
-    userId: req.session.userIdForTimestamp
-  });
 
   // Keep track of unique visitors per short link
   if (!req.session.uniqueSiteUserId) {
     req.session.uniqueSiteUserId = randId;
   }
-  urlDatabase[req.params.id].uniqueVisitor.add(req.session.uniqueSiteUserId);
 
+  if (urlDatabase[req.params.id]) {
+    // Save information for cookies when the short link exist
+    urlDatabase[req.params.id].allVisits.push({
+      timestamp: (new Date()).toString(),
+      userId: req.session.userIdForTimestamp
+    });
+    urlDatabase[req.params.id].uniqueVisitor.add(req.session.uniqueSiteUserId);
+
+    urlDatabase[req.params.id].visit = ("visit" in urlDatabase[req.params.id]) ? urlDatabase[req.params.id].visit + 1 : 1;
+    return res.redirect(urlDatabase[req.params.id].longURL);
+  }
   res.status(404).send("Shortened URL not found");
 });
 
+//-------------------------------------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

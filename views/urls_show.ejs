@@ -41,16 +41,24 @@
         </thead>
 
           <tbody>
-              <% history.forEach(ele => { %>
+              <% if (Object.keys(history).length < 1) { %>
                 <tr>
-                  <td>
-                    <%= ele.userId %>
-                  </td>
-                  <td>
-                    <%= ele.timestamp %>
+                  <td colspan="2">
+                    <em>No available data!</em> 
                   </td>
                 </tr>
-              <% }) %>
+              <% } else { %>
+                <% history.forEach(ele => { %>
+                  <tr>
+                    <td>
+                      <%= ele.userId %>
+                    </td>
+                    <td>
+                      <%= ele.timestamp %>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } %>
           </tbody>
   
       </table>
