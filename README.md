@@ -48,7 +48,7 @@ The following applications should be installed in your system:
 * [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com))
 
 
-**API**
+**Server**
 
 1. Create a folder and clone this repository
 
