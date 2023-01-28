@@ -1,6 +1,9 @@
 const bcrypt = require("bcryptjs");
 const users = require('../data/userDb');
 const generateRandomString = require('./generalHelpers');
+const salt = bcrypt.genSaltSync(10);
+
+users.userRandomID.password = bcrypt.hashSync(process.env.PASSWORD1, salt);
 
 const getUserByEmail = (email) => {
   const usersList = Object.values(users);
@@ -40,7 +43,7 @@ const checkAuthentication = (email, password, from) => {
 
 const addNewUser = (password, email) => {
   const randId = generateRandomString();
-  const hashedPassword = bcrypt.hashSync(password, 10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
   const newUser = {
     id: randId,
     email,
