@@ -72,7 +72,7 @@ $ npm install
 ```sh
 PORT = 8080
 PASSWORD1 = Hello123
-SESSIONKEY1 = Hello, this is my secret key for the assignment
+SESSIONKEY1 = Hello, this is my secret key
 SESSIONKEY2 = If you can guess my secret key, you are amazing
 ```
 
