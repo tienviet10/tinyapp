@@ -67,7 +67,7 @@ $ cd tinyapp
 ```sh
 $ npm install
 ```
-4. Create a .env file according to the .env.sample file. Fill out the PORT. password (for the default user: user@example.com) and the secret keys for cookie session.  For instance: 
+4. Create a .env file according to the .env.sample file. Fill out the PORT, password (for the default user: user@example.com), and the secret keys for cookie session. For instance: 
 
 ```sh
 PORT = 8080
