@@ -67,8 +67,9 @@ $ cd tinyapp
 ```sh
 $ npm install
 ```
+4. Create a .env file according to the .env.sample file. Fill out the PORT and the secret keys for cookie session.
 
-4. Run the development web server
+5. Run the development web server
 
 ```sh
 $ node express_server.js
