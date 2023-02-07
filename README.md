@@ -42,7 +42,6 @@
 
 ## Getting Started
 
-
 ### OPTION 1: (Git and Node are required)
 
 **Prerequisites:**
@@ -85,7 +84,6 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ node express_server.js
 ```
 
-<br />
 
 ### OPTION 2: (Git and Docker are required)
 
@@ -129,7 +127,6 @@ $ docker build -t tinyapp .
 $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app:ro -v /app/node_modules tinyapp
 ```
 
-<br />
 
 ### OPTION 3: (Docker is required)
 
@@ -143,7 +140,6 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=xyzHelloxyz --env SESSIONKEY2=abcHiabc tienviet/tiny-app
 ```
 
-<br />
 
 ## Deployment
 - Deployed to Amazon Elastic Compute Cloud <a href="https://aws.amazon.com/ec2/">(EC2)</a> using <a href="https://hub.docker.com/r/tienviet/tiny-app">Docker Image</a> from <a href="https://hub.docker.com/">Docker Hub</a>
