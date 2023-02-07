@@ -125,7 +125,7 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ docker build -t tinyapp .
 ```
 
-6. Run the app with the following command
+6. Run the development web application using the following command
 
 ```sh
 $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app:ro -v /app/node_modules tinyapp
