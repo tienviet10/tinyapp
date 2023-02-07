@@ -92,7 +92,7 @@ $ node express_server.js
 * [Git](https://git-scm.com) 
 * [Docker](https://docs.docker.com/get-docker/)
 
-**b) Development using Bind Mount:**
+**b) Development with Bind Mount:**
 
 1. Create a folder and clone this repository
 
