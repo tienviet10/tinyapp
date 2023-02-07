@@ -41,6 +41,8 @@
 
 ## Getting Started
 
+<br />
+
 ### OPTION 1: (Git and Node are required)
 
 **Prerequisites**
