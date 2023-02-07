@@ -47,7 +47,6 @@
 
 **Prerequisites:**
 
-The following applications should be installed in your system:
 * [Git](https://git-scm.com) 
 * [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com))
 
@@ -92,7 +91,6 @@ $ node express_server.js
 
 **Prerequisites:**
 
-The following applications should be installed in your system:
 * [Git](https://git-scm.com) 
 * [Docker](https://docs.docker.com/get-docker/)
 
@@ -137,7 +135,6 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 
 **Prerequisites:**
 
-The following applications should be installed in your system:
 * [Docker](https://docs.docker.com/get-docker/)
 
 **Downloading Docker Image from Docker Hub:**
