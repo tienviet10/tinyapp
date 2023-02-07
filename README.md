@@ -84,6 +84,8 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ node express_server.js
 ```
 
+<br />
+
 ### OPTION 2: (Git and Docker are required)
 
 **Prerequisites**
@@ -126,6 +128,8 @@ $ docker build -t tinyapp .
 ```sh
 $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app:ro -v /app/node_modules tinyapp
 ```
+
+<br />
 
 ### OPTION 3: (Docker is required)
 
