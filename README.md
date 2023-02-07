@@ -10,7 +10,8 @@
 <p align="center">
   <a href="#final-product">Final Product</a> •
   <a href="#dependencies">Dependencies</a> •
-  <a href="#getting-started">Getting Started</a>
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#deployment">Deployment</a>
 </p>
 
 
@@ -41,14 +42,15 @@
 
 ## Getting Started
 
-**Prerequisites**
+### OPTION 1: (Git and Node are required)
 
-The following applications should be installed in your system:
+**a) Prerequisites:**
+
 * [Git](https://git-scm.com) 
 * [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com))
 
 
-**Server**
+**b) Server:**
 
 1. Create a folder and clone this repository
 
@@ -70,10 +72,10 @@ $ npm install
 4. Create a .env file according to the .env.sample file. Fill out the PORT, password (for the default user: user@example.com), and the secret keys for cookie session. For instance: 
 
 ```sh
-PORT = 8080
-PASSWORD1 = Hello123
-SESSIONKEY1 = Hello, this is my secret key
-SESSIONKEY2 = If you can guess my secret key, you are amazing
+PORT=8080
+PASSWORD1=Hello123
+SESSIONKEY1=Hello, this is my secret key
+SESSIONKEY2=If you can guess my secret key, you are amazing
 ```
 
 5. Run the development web server
@@ -81,3 +83,70 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 ```sh
 $ node express_server.js
 ```
+
+
+### OPTION 2: (Git and Docker are required)
+
+**a) Prerequisites:**
+
+* [Git](https://git-scm.com) 
+* [Docker](https://docs.docker.com/get-docker/)
+
+**b) Development with Bind Mount:**
+
+1. Create a folder and clone this repository
+
+```sh
+$ git clone https://github.com/tienviet10/tinyapp.git
+```
+
+2. Move to the correct directory
+
+```sh
+$ cd tinyapp
+```
+
+4. Create a .env file according to the .env.sample file. Fill out the PORT, password (for the default user: user@example.com), and the secret keys for cookie session. For instance: 
+
+```sh
+PORT=8080
+PASSWORD1=Hello123
+SESSIONKEY1=Hello, this is my secret key
+SESSIONKEY2=If you can guess my secret key, you are amazing
+```
+
+5. Build an image
+
+```sh
+$ docker build -t tinyapp .
+```
+
+6. Run the development web application using the following command
+
+For MacOS:
+```sh
+$ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app -v /app/node_modules tinyapp
+```
+
+For Window:
+```sh
+$ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v "%cd%":/app -v /app/node_modules tinyapp
+```
+
+
+### OPTION 3: (Docker is required)
+
+**a) Prerequisites:**
+
+* [Docker](https://docs.docker.com/get-docker/)
+
+**b) Downloading Docker Image from Docker Hub:**
+
+```sh
+$ docker run --rm -p 8080:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=xyzHelloxyz --env SESSIONKEY2=abcHiabc tienviet/tiny-app
+```
+
+
+## Deployment
+- Deployed to Amazon Elastic Compute Cloud <a href="https://aws.amazon.com/ec2/">(EC2)</a> using <a href="https://hub.docker.com/r/tienviet/tiny-app">Docker Image</a> from <a href="https://hub.docker.com/">Docker Hub</a>
+- Utilized the AWS Domain Name System (DNS) web service, <a href="https://aws.amazon.com/route53/">Route 53</a>.
