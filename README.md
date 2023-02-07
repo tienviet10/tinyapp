@@ -41,18 +41,17 @@
 
 ## Getting Started
 
-<br />
 
 ### OPTION 1: (Git and Node are required)
 
-**Prerequisites**
+**Prerequisites:**
 
 The following applications should be installed in your system:
 * [Git](https://git-scm.com) 
 * [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com))
 
 
-**Server**
+**Server:**
 
 1. Create a folder and clone this repository
 
@@ -90,13 +89,13 @@ $ node express_server.js
 
 ### OPTION 2: (Git and Docker are required)
 
-**Prerequisites**
+**Prerequisites:**
 
 The following applications should be installed in your system:
 * [Git](https://git-scm.com) 
 * [Docker](https://docs.docker.com/get-docker/)
 
-**Development using Bind Mount**
+**Development using Bind Mount:**
 
 1. Create a folder and clone this repository
 
@@ -135,12 +134,12 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 
 ### OPTION 3: (Docker is required)
 
-**Prerequisites**
+**Prerequisites:**
 
 The following applications should be installed in your system:
 * [Docker](https://docs.docker.com/get-docker/)
 
-**Downloading Docker Image from Docker Hub**
+**Downloading Docker Image from Docker Hub:**
 
 ```sh
 $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=Hello --env SESSIONKEY2=Hi tienviet/tiny-app
