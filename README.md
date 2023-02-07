@@ -137,7 +137,7 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 **b) Downloading Docker Image from Docker Hub:**
 
 ```sh
-$ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=xyzHelloxyz --env SESSIONKEY2=abcHiabc tienviet/tiny-app
+$ docker run -d --rm -p 8080:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=xyzHelloxyz --env SESSIONKEY2=abcHiabc tienviet/tiny-app
 ```
 
 
