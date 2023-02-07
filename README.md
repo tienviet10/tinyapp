@@ -88,7 +88,7 @@ $ node express_server.js
 
 <br />
 
-### OPTION 2: (Git and Docker are required)
+#### OPTION 2: (Git and Docker are required)
 
 **Prerequisites:**
 
@@ -133,7 +133,7 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 
 <br />
 
-### OPTION 3: (Docker is required)
+#### OPTION 3: (Docker is required)
 
 **Prerequisites:**
 
