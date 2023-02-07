@@ -42,7 +42,7 @@
 
 ## Getting Started
 
-### OPTION 1: (Git and Node are required)
+### a) OPTION 1: (Git and Node are required)
 
 **Prerequisites:**
 
@@ -85,7 +85,7 @@ $ node express_server.js
 ```
 
 
-### OPTION 2: (Git and Docker are required)
+### b) OPTION 2: (Git and Docker are required)
 
 **Prerequisites:**
 
@@ -128,7 +128,7 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 ```
 
 
-### OPTION 3: (Docker is required)
+### c) OPTION 3: (Docker is required)
 
 **Prerequisites:**
 
