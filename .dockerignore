@@ -1,0 +1,7 @@
+node_modules
+Dockerfile
+.git
+docs
+README.md
+docker-command.txt
+*.pem
