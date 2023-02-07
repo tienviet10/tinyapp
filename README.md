@@ -41,7 +41,7 @@
 
 ## Getting Started
 
-### Method 1: (Git and Node are required)
+### OPTION 1: (Git and Node are required)
 
 **Prerequisites**
 
@@ -84,7 +84,7 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ node express_server.js
 ```
 
-### Method 2: (Git and Docker are required)
+### OPTION 2: (Git and Docker are required)
 
 **Prerequisites**
 
@@ -94,15 +94,40 @@ The following applications should be installed in your system:
 
 **Development using Bind Mount**
 
+1. Create a folder and clone this repository
+
+```sh
+$ git clone https://github.com/tienviet10/tinyapp.git
+```
+
+2. Move to the correct directory
+
+```sh
+$ cd tinyapp
+```
+
+4. Create a .env file according to the .env.sample file. Fill out the PORT, password (for the default user: user@example.com), and the secret keys for cookie session. For instance: 
+
+```sh
+PORT = 8080
+PASSWORD1 = Hello123
+SESSIONKEY1 = Hello, this is my secret key
+SESSIONKEY2 = If you can guess my secret key, you are amazing
+```
+
+5. Build an image
+
 ```sh
 $ docker build -t tinyapp .
 ```
+
+6. Run the app with the following command
 
 ```sh
 $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app:ro -v /app/node_modules tinyapp
 ```
 
-### Method 3: (Docker is required)
+### OPTION 3: (Docker is required)
 
 **Prerequisites**
 
