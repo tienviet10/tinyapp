@@ -84,7 +84,7 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ node express_server.js
 ```
 
-### Method 3: (Git and Docker are required)
+### Method 2: (Git and Docker are required)
 
 **Prerequisites**
 
