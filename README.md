@@ -43,7 +43,7 @@
 ## Getting Started
 
 
-#### OPTION 1: (Git and Node are required)
+### OPTION 1: (Git and Node are required)
 
 **Prerequisites:**
 
@@ -87,7 +87,7 @@ $ node express_server.js
 
 <br />
 
-#### OPTION 2: (Git and Docker are required)
+### OPTION 2: (Git and Docker are required)
 
 **Prerequisites:**
 
@@ -131,7 +131,7 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 
 <br />
 
-#### OPTION 3: (Docker is required)
+### OPTION 3: (Docker is required)
 
 **Prerequisites:**
 
@@ -142,6 +142,8 @@ $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/ap
 ```sh
 $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=xyzHelloxyz --env SESSIONKEY2=abcHiabc tienviet/tiny-app
 ```
+
+<br />
 
 ## Deployment
 - Deployed to Amazon Elastic Compute Cloud <a href="https://aws.amazon.com/ec2/">(EC2)</a> using <a href="https://hub.docker.com/r/tienviet/tiny-app">Docker Image</a> from <a href="https://hub.docker.com/">Docker Hub</a>
