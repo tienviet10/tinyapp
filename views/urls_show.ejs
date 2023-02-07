@@ -32,36 +32,38 @@
         </form>
       </div>
       <h4 class="mt-5 mb-3">History</h4>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">User ID</th>
-            <th scope="col">Time</th>
-          </tr>
-        </thead>
-
-          <tbody>
-              <% if (Object.keys(history).length < 1) { %>
-                <tr>
-                  <td colspan="2">
-                    <em>No available data!</em> 
-                  </td>
-                </tr>
-              <% } else { %>
-                <% history.forEach(ele => { %>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">User ID</th>
+              <th scope="col">Time</th>
+            </tr>
+          </thead>
+  
+            <tbody>
+                <% if (Object.keys(history).length < 1) { %>
                   <tr>
-                    <td>
-                      <%= ele.userId %>
-                    </td>
-                    <td>
-                      <%= ele.timestamp %>
+                    <td colspan="2">
+                      <em>No available data!</em> 
                     </td>
                   </tr>
-                <% }) %>
-              <% } %>
-          </tbody>
-  
-      </table>
+                <% } else { %>
+                  <% history.forEach(ele => { %>
+                    <tr>
+                      <td>
+                        <%= ele.userId %>
+                      </td>
+                      <td>
+                        <%= ele.timestamp %>
+                      </td>
+                    </tr>
+                  <% }) %>
+                <% } %>
+            </tbody>
+    
+        </table>
+      </div>
     </div>
 
 
