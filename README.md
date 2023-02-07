@@ -10,7 +10,8 @@
 <p align="center">
   <a href="#final-product">Final Product</a> •
   <a href="#dependencies">Dependencies</a> •
-  <a href="#getting-started">Getting Started</a>
+  <a href="#getting-started">Getting Started</a> •
+  <a href="#deployment">Deployment</a>
 </p>
 
 
@@ -145,3 +146,6 @@ The following applications should be installed in your system:
 $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=Hello --env SESSIONKEY2=Hi tienviet/tiny-app
 ```
 
+## Deployment
+- This application was deployed to Amazon Elastic Compute Cloud (<a href="https://aws.amazon.com/ec2/">EC2</a>) using <a href="https://hub.docker.com/r/tienviet/tiny-app">Docker Image</a> from <a href="https://hub.docker.com/">Docker Hub</a>
+- 
