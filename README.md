@@ -109,10 +109,10 @@ $ cd tinyapp
 4. Create a .env file according to the .env.sample file. Fill out the PORT, password (for the default user: user@example.com), and the secret keys for cookie session. For instance: 
 
 ```sh
-PORT = 8080
-PASSWORD1 = Hello123
-SESSIONKEY1 = Hello, this is my secret key
-SESSIONKEY2 = If you can guess my secret key, you are amazing
+PORT=8080
+PASSWORD1=Hello123
+SESSIONKEY1=Hello, this is my secret key
+SESSIONKEY2=If you can guess my secret key, you are amazing
 ```
 
 5. Build an image
