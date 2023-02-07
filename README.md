@@ -43,7 +43,7 @@
 ## Getting Started
 
 
-### OPTION 1: (Git and Node are required)
+#### OPTION 1: (Git and Node are required)
 
 **Prerequisites:**
 
