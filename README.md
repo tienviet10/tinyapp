@@ -41,7 +41,7 @@
 
 ## Getting Started
 
-### Method 1:
+### Method 1: (Git and Node are required)
 
 **Prerequisites**
 
