@@ -83,3 +83,9 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 ```sh
 $ node express_server.js
 ```
+
+### Method 2: (Docker is required)
+
+```sh
+$ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=Hello --env SESSIONKEY2=Hi tienviet/tiny-app
+```
