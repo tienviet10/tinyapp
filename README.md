@@ -84,8 +84,34 @@ SESSIONKEY2 = If you can guess my secret key, you are amazing
 $ node express_server.js
 ```
 
-### Method 2: (Docker is required)
+### Method 3: (Git and Docker are required)
+
+**Prerequisites**
+
+The following applications should be installed in your system:
+* [Git](https://git-scm.com) 
+* [Docker](https://docs.docker.com/get-docker/)
+
+**Development using Bind Mount**
+
+```sh
+$ docker build -t tinyapp .
+```
+
+```sh
+$ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app:ro -v /app/node_modules tinyapp
+```
+
+### Method 3: (Docker is required)
+
+**Prerequisites**
+
+The following applications should be installed in your system:
+* [Docker](https://docs.docker.com/get-docker/)
+
+**Downloading Docker Image from Docker Hub**
 
 ```sh
 $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESSIONKEY1=Hello --env SESSIONKEY2=Hi tienviet/tiny-app
 ```
+
