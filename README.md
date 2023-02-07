@@ -123,7 +123,7 @@ $ docker build -t tinyapp .
 
 6. Run the development web application using the following command
 
-For MACOS:
+For MacOS:
 ```sh
 $ docker run --rm -p 8080:8080 --env-file ./.env --name tiny-app-1 -v $(pwd):/app -v /app/node_modules tinyapp
 ```
