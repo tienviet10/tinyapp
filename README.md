@@ -148,4 +148,4 @@ $ docker run -d --rm -p 80:8080 --env PORT=8080 --env PASSWORD1=Hello --env SESS
 
 ## Deployment
 - Deployed to Amazon Elastic Compute Cloud <a href="https://aws.amazon.com/ec2/">(EC2)</a> using <a href="https://hub.docker.com/r/tienviet/tiny-app">Docker Image</a> from <a href="https://hub.docker.com/">Docker Hub</a>
-- Utilized the AWS Domain Name System (DNS), <a href="https://aws.amazon.com/route53/">Route 53</a>.
+- Utilized the AWS Domain Name System (DNS) web service, <a href="https://aws.amazon.com/route53/">Route 53</a>.
