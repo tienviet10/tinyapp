@@ -41,6 +41,8 @@
 
 ## Getting Started
 
+### Method 1:
+
 **Prerequisites**
 
 The following applications should be installed in your system:
